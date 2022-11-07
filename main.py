@@ -1,15 +1,8 @@
 # This is a sample Python script.
-import csv
-import Books as b
-
-
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+import sys # Access to argv and other stuff
+import csv # To read csv and write on it
+import Books as b # Import the class file of books who manage the creation and displaying of books
+import argparse
 
 
 def print_books(library='library.csv'):
@@ -36,9 +29,17 @@ def take_a_book(title, library):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-    b1 = b.Book("Coucou", "Unknow")
-    print_books()
+    #Create the argparse to content all the arguments pass to the terminal
+    #ArgumentParser is an object that will contains all the arguments that we add to it with the command add_arguments
+    parser = argparse.ArgumentParser(description="Display the list of all books contened in library")
+    #Adding the argument --library where we can specify wich file we can access
+    parser.add_argument("-l","--library",type=str,default="library.csv",help="Show all the books title and author there is in the library")
+    #Parsing all the args in one variable so we can access to it in the code with args.{variable_name}
+    args = parser.parse_args()
+    #Print all the args
+    print("Project title {}".format(args))
+    #Print all the books contained in the library
+    print_books(args.library)
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
