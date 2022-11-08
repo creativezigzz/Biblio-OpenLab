@@ -1,4 +1,5 @@
 #!python3
+# -*- coding: utf-8 -*-
 
 import os  # To use delete and rename
 import csv  # To read csv and write on it
