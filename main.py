@@ -6,11 +6,24 @@ import csv  # To read csv and write on it
 import Books as b  # Import the class file of books who manage the creation and displaying of books
 import argparse  # Used to create interaction directly from the commandline
 
+def remove_book(title, catalogue):
+    """
+    function to remove rented book from library list
+    PRE: The library file must exists and title must be present in library
+    POST: The rented book is removed from library list
+    """
+    new_catalogue = list(filter(lambda x: x.title != title, catalogue))
+    with open ("library.csv", "w+") as file:
+        file.write("title, author")
+        for item in catalogue:
+            file.write(f"{item.title},{item.author}\n")
+    
+    
 
 def print_books(library='library.csv'):
     """
     Function to print all the books from a csv file called(library.csv)
-    PRE:the library file must exist.
+    PRE:the library file must exists.
     POST: Print all the books in the format : Title - Author
     RAISE: If no books in the library should raise an Exception : LibraryEmpty
     """
@@ -44,7 +57,8 @@ def take_a_book(title, library):
                             book_rented))  # Print in the console the book that we rent
                 os.rename(library, "library.csv")
                 os.rename("temp.csv", library)
-                os.remove("library.csv")
+                #os.remove("library.csv")
+                remove_book(title, csv_to_list_of_books(library))
     else:
         # If the book is not in the library display some message
         print("\nThe book has not been found.\nLook for any typo in the title "
@@ -64,7 +78,7 @@ def is_in_library(title, list_of_books):
     """
     # For points : using lambda and filter fonction : map
     title_list = list(map(lambda x: x.title, list_of_books))  # We create a list contenting all the title of the books
-
+    
     if title in title_list:
         return True
     return False
