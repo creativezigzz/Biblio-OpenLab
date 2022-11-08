@@ -10,7 +10,7 @@ def print_books(library='library.csv'):
     Function to print all the books from a csv file called(library.csv)
     PRE:the library file must exist.
     POST: Print all the books in the format : Title - Author
-    RAISE: If no books in the librairy should raise an Exception : LibrairyEmpty
+    RAISE: If no books in the library should raise an Exception : LibraryEmpty
     """
     with open(library, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -37,9 +37,11 @@ def is_in_library(title, list_of_books):
     :param list_of_books: A list contenting all the book object.
     :return: True or False depending on if the library contain the book or not based on his title
     """
-    for book in list_of_books:
-        if book.title == title:
-            return True
+    # For points : using lambda and filter fonction : map
+    title_list = list(map(lambda x: x.title, list_of_books))  # We create a list contenting all the title of the books
+
+    if title in title_list:
+        return True
     return False
 
 
@@ -77,8 +79,8 @@ if __name__ == '__main__':
     # Print all the books contained in the library
     print_books(args.library)
     # print(csv_to_list_of_book(args.library))
-    if args.search :
+    # Print if the books is in the library if the arguments of search is going.
+    if args.search:
         print(is_in_library(args.search, csv_to_list_of_books(args.library)))
-
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
