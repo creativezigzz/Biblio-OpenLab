@@ -7,17 +7,17 @@ import Books as b  # Import the class file of books who manage the creation and 
 import argparse  # Used to create interaction directly from the commandline
 
 
-# def remove_book(title, catalogue):
-#     """
-#     function to remove rented book from library list
-#     PRE: The library file must exist and title must be present in library
-#     POST: The rented book is removed from library list
-#     """
-#     new_catalogue = list(filter(lambda x: x.title != title, catalogue))
-#     with open ("library.csv", "w+") as file:
-#         file.write("title, author")
-#         for item in catalogue:
-#             file.write(f"{item.title},{item.author}\n")
+def remove_book(title, catalogue):
+    """
+    function to remove rented book from library list
+    PRE: The library file must exist and title must be present in library
+    POST: The rented book is removed from library list
+    """
+    new_catalogue = list(filter(lambda x: x.title != title, catalogue))
+    with open ("library.csv", "w+") as file:
+        file.write("title, author")
+        for item in catalogue:
+            file.write(f"{item.title},{item.author}\n")
 
 def print_books(library='library.csv'):
     """
@@ -41,22 +41,7 @@ def take_a_book(title, library):
     """
     # Check if the book is in the library otherwise
     if is_in_library(title, csv_to_list_of_books(library)):
-        with open(library, 'r', newline='') as f_reader:
-            with open("temp.csv", 'w', newline='') as f_writer:
-                # reader for the file
-                f1 = csv.reader(f_reader)
-                # writer of the file
-                f2 = csv.writer(f_writer)  # creating a temp file for writing
-                for row in f1:  # Look over the whole file
-                    if title not in row[0]:  # if the title is not in the row he will write the book
-                        f2.writerow(row)  # write the row in the file
-                    else:
-                        book_rented = b.Book(row[0], row[1])  # The book that we rent
-                        print("{} has been successfully rented \n Thank you for using our library system".format(
-                            book_rented))  # Print in the console the book that we rent
-        os.rename(library, "dump.csv")
-        os.rename("temp.csv", library)
-        os.remove("dump.csv")
+        remove_book(title,csv_to_list_of_books(library))
     else:
         # If the book is not in the library display some message
         print("\nThe book has not been found.\nLook for any typo in the title "
