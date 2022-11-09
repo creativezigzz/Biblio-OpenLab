@@ -14,10 +14,15 @@ def remove_book(title, catalogue):
     POST: The rented book is removed from library list
     """
     new_catalogue = list(filter(lambda x: x.title != title, catalogue))
-    with open ("library.csv", "w+") as file:
-        file.write("title, author")
-        for item in catalogue:
-            file.write(f"{item.title},{item.author}\n")
+    print(new_catalogue)
+    with open("library.csv", "w",newline='') as file:
+        fieldnames= ['title', 'author']
+        writer = csv.DictWriter(file,fieldnames)
+        writer.writeheader()
+        for item in new_catalogue:
+            print(item.title)
+            writer.writerow({'title': item.title,'author': item.author})
+
 
 def print_books(library='library.csv'):
     """
@@ -41,7 +46,9 @@ def take_a_book(title, library):
     """
     # Check if the book is in the library otherwise
     if is_in_library(title, csv_to_list_of_books(library)):
-        remove_book(title,csv_to_list_of_books(library))
+        book = list(filter(lambda x: x.title == title, csv_to_list_of_books(library)))
+        remove_book(title, csv_to_list_of_books(library))
+        print(f"{book[0]} successfully rented")
     else:
         # If the book is not in the library display some message
         print("\nThe book has not been found.\nLook for any typo in the title "
@@ -86,8 +93,8 @@ def csv_to_list_of_books(csv_file):
 if __name__ == '__main__':
     # Create the argparse to content all the arguments pass to the terminal
     # ArgumentParser is an object that will contain all the arguments that we add to it with the command add_arguments
-    parser = argparse.ArgumentParser(description="Display the list of all books contened in library",
-                                     usage="Library management tool")
+    parser = argparse.ArgumentParser(description="Library management tool to let students rent educational books",
+                                     usage="Biblio 2.0")
     # Adding the argument --library where we can specify wich file we can access default is "library.csv"
     parser.add_argument("-l", "--library", type=str, default="library.csv",
                         help="Choose the file contenting the library. Default is library.csv")
@@ -97,10 +104,12 @@ if __name__ == '__main__':
                              " the title must be the exact same as the one stored in library")
     # Adding the argument --rent to rent a book and display the title + author  of the book rented
     parser.add_argument("-r", "--rent", type=str, help="Rent a book, remove it from the libray and will display the "
-                                                       "title + author of the book that you just rent")
+                                                       "title + author of the book that you just rent.\n "
+                                                       "The search are case sensitive so the title must be "
+                                                       "the exact same as the one stored in library")
     # Adding the argument --show to show all the books present in the library
-    parser.add_argument("-sh", "--show", type=bool, default=False,
-                        help="Show all the books present in the library, it's a boolean so True or False")
+    parser.add_argument("-sh", "--show", default=False, action='store_true',
+                        help="Show all the books present in the library")
     # Parsing all the args in one variable, so we can access to it in the code with args.{variable_name}
     args = parser.parse_args()
     # Print all the args
