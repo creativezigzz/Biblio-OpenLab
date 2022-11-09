@@ -1,10 +1,23 @@
 #!python3
+# -*- coding : utf-8 -*-
 
 import os  # To use delete and rename
 import csv  # To read csv and write on it
 import Books as b  # Import the class file of books who manage the creation and displaying of books
 import argparse  # Used to create interaction directly from the commandline
 
+
+# def remove_book(title, catalogue):
+#     """
+#     function to remove rented book from library list
+#     PRE: The library file must exist and title must be present in library
+#     POST: The rented book is removed from library list
+#     """
+#     new_catalogue = list(filter(lambda x: x.title != title, catalogue))
+#     with open ("library.csv", "w+") as file:
+#         file.write("title, author")
+#         for item in catalogue:
+#             file.write(f"{item.title},{item.author}\n")
 
 def print_books(library='library.csv'):
     """
@@ -22,7 +35,7 @@ def print_books(library='library.csv'):
 
 def take_a_book(title, library):
     """
-    :param title: a string that we will look for in the file librairy
+    :param title: a string that we will look for in the file library
     :param library: The path to the file library
     :return: print the title of the book if manage to book otherwise raise exception : No books found
     """
