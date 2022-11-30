@@ -1,5 +1,5 @@
-title,author
-Coucou,CoucouBoy
-Author is basic job,AuthorGirl
-Ready for more time,TimeGirl
-Monetize your app,Capitalism Guy
+title,authors,publisher,status
+Coucou,CoucouBoy,aa,true
+Author is basic job,AuthorGirl,aa,false
+Ready for more time,TimeGirl,aa,true
+Monetize your app,Capitalism Guy,aa,false
