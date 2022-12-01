@@ -82,5 +82,5 @@ class Library:
             writer = csv.DictWriter(file, fieldnames)
             writer.writeheader()
             for item in new_catalogue:
-                writer.writerow({'title': item.title, 'author': item.author,
+                writer.writerow({'title': item.title, 'authors': item.authors,
                                  'publisher': item.publisher, 'status': item.status})

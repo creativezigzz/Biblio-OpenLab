@@ -27,12 +27,21 @@ def listdirs(rootdir):
 
 
 class Location:
-
+    """
+    A location in the school where some books are situated
+    """
     def __init__(self, local):
         self._local = local
         self._sections = []
 
     def add_sections(self):
+        """
+        Create and add all the sections from the root folder self_local in the variable self._sections
+        pre: self.local must be an existing folder in the data system otherwise its created
+        post: self_sections -> add all the sections_path folder from the root folder of the self._local
+        raise: if the folder doesn't exist or path is incorrect raise an LocationException
+        :return: a list of Section() that are contained in the self_local
+        """
         # Add all the section in a list we can iterate
         list_sections = listdirs(f'./Locations/{self.local}')
         for section_path in list_sections:
@@ -50,6 +59,10 @@ class Location:
 
 class Section(Location):
     def __init__(self, section_path):
+        """Initialize a new Section with the name of the local in it to access from it
+         pre: self._section_path must be a correct path : "Locations/{super().local}/{self.section_path}"
+         post: /
+         """
         super().__init__(self)
         self._section_path = section_path
         self._bookshelves = []
@@ -63,6 +76,16 @@ class Section(Location):
         return self._bookshelves
 
     def add_bookshelves(self):
+        """
+               Create and add all the bookshelves from the section folder self_section_path in the variable self._bookshelves
+               pre: self must be initialize from a location as it inherit from is parent
+                    self can be empty
+
+               post: self_bookshelves -> add all the bookshelves objects from the section folder of the self._section_path
+               raise: if the folder doesn't exist or path is incorrect raise an LocationSectionException
+               :return: a list of Bookshelf() that are contained in the self_bookshelves
+               """
+        # Add all the section in a list we can iterate
         list_bookshelves = listfile(self.section_path)
         for bookshelf_path in list_bookshelves:
             bookshelf = BookShelf(bookshelf_path)
@@ -76,6 +99,12 @@ class BookShelf(Section):
         self._books = self.csv_to_list_of_books(bookshelf_path)
 
     def __str__(self):
+        """Print the bookshelf in the good format
+        pre:if self is empty don't return Empty
+        post:/
+        raise: if self.bookshelf_path is in incorrect format ('folder/dir/file.csv') raise an LocationSectionBookshelfException
+        :return: A string contenting all the books that are in the bookshelf.
+        """
         lib_str = '\nBookshelves : {:<23}| Section : {:<23}\n' \
                   '{:^8}|{:^25}|{:^25}|{:^25}|{:<8}|{:^15}\n{}\n' \
             .format(os.path.basename(self.bookshelf_path), "Section",
