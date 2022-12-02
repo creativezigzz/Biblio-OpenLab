@@ -77,7 +77,7 @@ class Library:
         """
         new_catalogue = list(filter(lambda x: x.title != title, self.library))
         print(new_catalogue)
-        with open("library.csv", "w", newline='') as file:
+        with open("../library.csv", "w", newline='') as file:
             fieldnames = ['title', 'authors', 'publisher', 'status']
             writer = csv.DictWriter(file, fieldnames)
             writer.writeheader()
