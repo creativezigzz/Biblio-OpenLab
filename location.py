@@ -153,10 +153,10 @@ class BookShelf(Section):
             return True
         return False
 
-
-l = Location('L101')
-l.add_sections()
-for s in l.sections:
-    s.add_bookshelves()
-    for b in s.bookshelves:
-        print(b)
+#Uncomment to test location.py
+# l = Location('L101')
+# l.add_sections()
+# for s in l.sections:
+#     s.add_bookshelves()
+#     for b in s.bookshelves:
+#         print(b)
