@@ -1,5 +1,5 @@
 import pytest
-from location import Location, Section, BookShelf
+from lib.location import Location, Section
 
 
 def test_number_of_sections():
@@ -11,3 +11,4 @@ def test_number_of_sections():
     assert section_1 != section_2
     assert isinstance(loc.sections, list)
     assert isinstance(loc.sections[0], Section)
+    

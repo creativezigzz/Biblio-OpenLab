@@ -2,7 +2,7 @@
 # -*- coding : utf-8 -*-
 
 import argparse  # Used to create interaction directly from the commandline
-from library import Library
+from lib.library import Library
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
