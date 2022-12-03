@@ -3,6 +3,7 @@
 import csv
 import os
 from books import Book
+from address import Address
 
 
 def listfile(rootdir):
@@ -34,6 +35,20 @@ class Location:
     def __init__(self, local):
         self._local = local
         self._sections = []
+        self._address = Address('-', '-', '-')
+
+    def set_where(self):
+        """
+        Setting up the address of the location
+        :return:
+        """
+        print("Set the address of the location")
+        new_street = input("Street name: \n")
+        new_number = input('Number of the house/building \n')
+        new_city = input('City : \n')
+        self.address.set_city(new_city)
+        self.address.set_street(new_street)
+        self.address.set_number(new_number)
 
     def add_sections(self):
         """
@@ -73,6 +88,11 @@ class Section(Location):
         self._section_path = section_path
         self._section_number = os.path.basename(self.section_path)
         self._bookshelves = []
+        self._address = address
+
+    @property
+    def address(self):
+        return self._address
 
     @property
     def section_path(self):
