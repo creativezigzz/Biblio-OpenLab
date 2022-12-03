@@ -2,7 +2,7 @@
 
 class User():
 
-    def __init__(self,first_name,lastname):
+    def __init__(self,firstname,lastname):
         pass
 
     def check_account(self):
@@ -10,8 +10,10 @@ class User():
 
 class Student(User):
 
-    # def __init__(self):
-    #     super(Student,self).__init__()
+    # def __init__(self,firstname,lastname,class):
+    #     super().__init__(firstname,lastname)  #Exemple d'héritage
+    #
+    #     self._class = class
      pass
 class Teacher(User):
     # def __init__(self):
