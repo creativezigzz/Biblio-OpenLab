@@ -30,6 +30,7 @@ class Location:
     """
     A location in the school where some books are situated
     """
+
     def __init__(self, local):
         self._local = local
         self._sections = []
@@ -43,9 +44,10 @@ class Location:
         :return: a list of Section() that are contained in the self_local
         """
         # Add all the section in a list we can iterate
-        list_sections = listdirs(f'./Locations/{self.local}')
+        # Path to the file Here we need to change some stuff to point to correct folder
+        list_sections = listdirs(f'../Locations/{self.local}')
         for section_path in list_sections:
-            section = Section(section_path)
+            section = Section(self.local, section_path,self.address)
             self.sections.append(section)
 
     @property
@@ -56,15 +58,20 @@ class Location:
     def sections(self):
         return self._sections
 
+    @property
+    def address(self):
+        return self._address
+
 
 class Section(Location):
-    def __init__(self, section_path):
+    def __init__(self, local, section_path, address):
         """Initialize a new Section with the name of the local in it to access from it
          pre: self._section_path must be a correct path : "Locations/{super().local}/{self.section_path}"
          post: /
          """
-        super().__init__(self)
+        super().__init__(local)
         self._section_path = section_path
+        self._section_number = os.path.basename(self.section_path)
         self._bookshelves = []
 
     @property
@@ -74,6 +81,10 @@ class Section(Location):
     @property
     def bookshelves(self):
         return self._bookshelves
+
+    @property
+    def section_number(self):
+        return self._section_number
 
     def add_bookshelves(self):
         """
@@ -88,13 +99,14 @@ class Section(Location):
         # Add all the section in a list we can iterate
         list_bookshelves = listfile(self.section_path)
         for bookshelf_path in list_bookshelves:
-            bookshelf = BookShelf(bookshelf_path)
+            bookshelf = BookShelf(local=self.local, section_path=self.section_path, bookshelf_path=bookshelf_path,
+                                  address=self.address)
             self._bookshelves.append(bookshelf)
 
 
 class BookShelf(Section):
-    def __init__(self, bookshelf_path):
-        super().__init__(self)
+    def __init__(self, local, section_path, bookshelf_path, address):
+        super().__init__(local, section_path, address)
         self._bookshelf_path = bookshelf_path
         self._books = self.csv_to_list_of_books(bookshelf_path)
 
@@ -105,14 +117,14 @@ class BookShelf(Section):
         raise: if self.bookshelf_path is in incorrect format ('folder/dir/file.csv') raise an LocationSectionBookshelfException
         :return: A string contenting all the books that are in the bookshelf.
         """
-        lib_str = '\nBookshelves : {:<23}| Section : {:<23}\n' \
+        lib_str = '\nBookshelf : {:<15} || \tSection : {:^15} || \tLocal : {:^15}\n' \
                   '{:^8}|{:^25}|{:^25}|{:^25}|{:<8}|{:^15}\n{}\n' \
-            .format(os.path.basename(self.bookshelf_path), "Section",
+            .format(os.path.basename(self.bookshelf_path), self.section_number, self.local,
                     'ID', 'Title', 'Authors', 'Publisher', 'Status',
                     'Who', '-' * 110)
         for book in self.books:
             lib_str += str(book) + '\n'
-        return lib_str + '\n \n '
+        return lib_str + '\n '
 
     @property
     def books(self):
@@ -153,10 +165,13 @@ class BookShelf(Section):
             return True
         return False
 
-#Uncomment to test location.py
+
+# Uncomment to test location.py
 # l = Location('L101')
+# l.set_where()
 # l.add_sections()
 # for s in l.sections:
 #     s.add_bookshelves()
 #     for b in s.bookshelves:
 #         print(b)
+#         print(b.address)
