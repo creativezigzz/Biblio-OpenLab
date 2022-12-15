@@ -5,4 +5,4 @@ Python project for Dev class
 
 Uses :
 
-main.py -h to show help message
+python main.py -m True
