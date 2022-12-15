@@ -1,7 +1,7 @@
 #!python3
 # -*- coding : utf-8 -*-
 
-class Address():
+class Address:
     def __init__(self, street, number, city):
         self._street = street
         self._number = number

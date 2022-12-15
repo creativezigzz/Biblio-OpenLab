@@ -3,11 +3,12 @@
 
 from lib.books import Book
 import csv  # To read csv and write on it
+from lib.app import App
 
 
 class Library:
-    def __init__(self, file='library.csv'):
-        self._library = self.csv_to_list_of_books(file)
+    def __init__(self):
+        self._library = App.csv_to_list_of_books()
 
     def __str__(self):
         lib_str = '{:^8}|{:^25}|{:^25}|{:^25}|{:<8}|{:^15}\n' \
@@ -20,21 +21,9 @@ class Library:
     def library(self):
         return self._library
 
-    @staticmethod
-    def csv_to_list_of_books(file):
-        """
-        Return a list of books
-        :param file: The library that we want to read from
-        :return: a list contenting all the books
-        """
-        with open(file, newline='') as csvfile:
-            list_of_books = []
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                book = Book(row['title'], file, row['status'], row['authors'], row['publisher'])
-                list_of_books.append(book)
-
-        return list_of_books
+    @library.setter
+    def library(self, library_list):
+        self._library = library_list
 
     def is_in_library(self, title):
         """
@@ -50,15 +39,10 @@ class Library:
             return False
         else:
             return True
-            #map(lambda x: x.title, self.library))  # We create a list contenting all the title of the books
-        # if title in title_list:
-        #     return True
-        # return False
 
     def take_a_book(self):
         """
         Remove a book from library
-        :param title: a string that we will look for in the file library
         :return: print the title of the book if manage to book otherwise raise exception : No books found
         """
         # Check if the book is in the library otherwise
@@ -68,33 +52,49 @@ class Library:
             for book in self.library:
                 if my_choice == book.id:
                     if book.status == 'Libre':
-                        book.status = 'Loué'
+                        book.status = 'Loue'
+                        book.person = App.cuser
                         print(f"The book '{book.title}' successfully rented")
                     else:
                         print("Le livre que vous voulez louer n'est pas libre")
         else:
             # If the book is not in the library display some message
             print("\nThe book has not been found.\nLook for any typo in the title "
-                  "and remember that the title is case sensitive.\n"
-                  "If you don't know the name look for the --show argument "
-                  "to see the list of book available at the moment")
+                  "and remember that the title is case sensitive.\n")
 
     def return_a_book(self):
         id_to_return = int(input("Quelle est l'ID du livre que vous voulez rendre ? : "))
-        book_to_return = [x for x in self.library if x.id == id_to_return]
+        # book_to_return = [x for x in self.library if x.id == id_to_return]
         for book in self.library:
-            if id_to_return == book.id and book.status == "Loué":
+            if id_to_return == book.id and book.status == "Loue":
                 book.status = "Libre"
-                book.person = '/'
+                book.person = 'x'
                 print(f"\n\t==> the book '{book.title} was succefuly returned\n")
+            else:
+                print("error while returning a book")
 
     def list_of_books_to_csv(self):
-        with open("library.csv", "r+",newline='') as csvfile:
+        with open("library.csv", "r+", newline='') as csvfile:
             writer = csv.writer(csvfile)
 
-            writer.writerow(['title','authors','publisher','status'])
+            writer.writerow(['title','authors','publisher','status','person'])
             for book in self.library:
-                writer.writerow([book.title,book.authors,book.publisher,book.status])
+                writer.writerow([book.title,book.authors,book.publisher,book.status,book.person])
+
+    def add_a_book(self):
+        title = input("Quel est le titre du livre? : ")
+        authors = input("Quel est l'auteur du livre? : ")
+        publisher = input("Quel est la maison d'édition? : ")
+        book = Book(title, "libre", authors, publisher)
+
+        self.library.append(book)
+        self.list_of_books_to_csv()
+
+    def remove_a_book(self):
+        removed_book_title = input("Quelle est le titre du livre que vous voulez retirer de la bibliothèque? : ")
+        print("Livre supprimé de la base de donnée")
+        self.library = list(filter(lambda x: x.title != removed_book_title, self.library))
+        self.list_of_books_to_csv()
     
     # def remove_book(self, title):
     #     """

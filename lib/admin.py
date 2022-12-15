@@ -4,11 +4,11 @@
 from lib.user import User
 import hashlib
 
+
 class Admin(User):
-    def __init__(self,firstname,lastname):
-        super().__init__(firstname,lastname)
-        #self._firstname = firstname
-        #self._lastname = lastname
+    def __init__(self, firstname, lastname):
+        self._firstname = firstname
+        self._lastname = lastname
         self._username = "admin"
         self._password = self.hash_password("admin")
 
@@ -16,10 +16,11 @@ class Admin(User):
         if self.login():
             print("change ton mot de passe...")
             self._password = input("Entrez votre nouveau password : ")
-            print(("Password changed succesfully"))
+            print("Password changed succesfully")
             self._password = self.hash_password(self._password)
-    
-    def hash_password(self, password):
+
+    @staticmethod
+    def hash_password(password):
         m = hashlib.sha256()
         m.update(password.encode("utf8"))
         return m.hexdigest()

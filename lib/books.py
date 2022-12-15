@@ -7,21 +7,18 @@ import itertools
 class Book:
     id_book = itertools.count()
 
-    def __init__(self, title, library, status, authors='Unknown', publisher='Unknown', person='Michel'):
+    def __init__(self, title, status, authors='Unknown', publisher='Unknown', person='X'):
         """This creates a new instance of Book with a title and author"""
         self._title = title
         self._authors = authors
         self._id = next(Book.id_book)
         self._publisher = publisher
         self._status = status
-        self.library = library
         self._person = person
 
     def __str__(self):
         b = "{:^8}| {:<23.23} | {:<23.23} | {:<23.23} | {:<8} | {:^15}" \
-            .format(self.id, self.title, self.authors, self.publisher,self.status, '/')
-                    #'Loué' if not self.status else 'Libre',
-                    #'/' if self.status else self.person)
+            .format(self.id, self.title, self.authors, self.publisher, self.status, self.person)
         return b
 
     @property
