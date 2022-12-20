@@ -117,7 +117,7 @@ if __name__ == '__main__':
     # Adding the argument --show to show all the books present in the library
     parser.add_argument("-sh", "--show", default=False, action='store_true',
                         help="Show all the books present in the library")
-    parser.add_argument("-m", "--menu", type=bool, default=False, help="Voyager à l'aide du menu")
+    parser.add_argument("-m", "--menu", action='store_true', help="Voyager à l'aide du menu")
     # Parsing all the args in one variable, so we can access to it in the code with args.{variable_name}
     args = parser.parse_args()
     # Print all the args
